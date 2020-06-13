@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+<section id="profile" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="menu-about">
+          <h3>
+            <span>
+              {{request.user.username}}
+            </span>
+          </h3>
+          <ul>
+            <li>
+              <a href="{% url 'profile' %}">Edit Profile</a>
+            </li>
+            <li>
+              <a href="{% url 'user_payments' %}">Your Payments</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <form action="/accounts/profile/" method="POST" class="form">
+          {% csrf_token %} {% for field in form %}
+          <div class="form-group">
+            {{ field.errors }}
+            <label for="" class="">{{ field.label_tag }}</label>
+            {{ field |add_class:'form-control' }} {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <input
+            type="submit"
+            value="Update"
+            class="btn btn-success btn-block"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

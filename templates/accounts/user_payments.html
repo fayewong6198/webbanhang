@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+<section id="profile" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="menu-about">
+          <h3>
+            <span>
+              {{request.user.username}}
+            </span>
+          </h3>
+          <ul>
+            <li>
+              <a href="{% url 'profile' %}">Edit Profile</a>
+            </li>
+            <li>
+              <a href="{% url 'user_payments' %}">Your Payments</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+      <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Total</th>
+      <th scope="col">Created_at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for payment in payments %}
+    <tr>
+      <th scope="row"><a href="{% url 'user_payment' payment.id %}">Payment number #{{payment.id}} </a></th>
+      <td>{{payment.total}}</td>
+      <td>{{payment.created_at}}</td>
+      
+    </tr>
+        {% endfor %}
+    
+   
+  </tbody>
+</table>
+        <ul class="list-group">
+      
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

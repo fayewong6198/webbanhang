@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block content %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <section class="product-content clearfix">
+          <h1 class="title clearfix"><span>Sản phẩm</span></h1>
+          <nav class="navbar navbar-default product-filter">
+            <ul class="display">
+              <li id="grid" class="active grid">
+                <a href="#" title="Grid"><i class="fa fa-th-large"></i></a>
+              </li>
+              <li id="list" class="list">
+                <a href="#" title="List"><i class="fa fa-th-list"></i></a>
+              </li>
+            </ul>
+            <div class="limit">
+              <span>Sản phẩm/trang</span>
+              <select
+                id="lblimit"
+                name="lblimit"
+                class="nb_item"
+                onchange="window.location.href = this.options[this.selectedIndex].value"
+              >
+                <option value="?limit=10">10</option>
+                <option value="?limit=12">12</option>
+                <option value="?limit=20">20</option>
+                <option value="?limit=50">50</option>
+                <option value="?limit=100">100</option>
+                <option value="?limit=250">250</option>
+                <option value="?limit=500">500</option>
+              </select>
+            </div>
+            <div class="sort">
+              <span>Sắp xếp</span>
+              <select
+                class="selectProductSort"
+                id="lbsort"
+                onchange="window.location.href = this.options[this.selectedIndex].value"
+              >
+                <option value="?sort=index&amp;order=asc">Mặc định</option>
+                <option value="?sort=price&amp;order=asc"
+                  >Gi&#225; tăng dần</option
+                >
+                <option value="?sort=price&amp;order=desc"
+                  >Gi&#225; giảm dần</option
+                >
+                <option value="?sort=name&amp;order=asc"
+                  >T&#234;n sản phẩm: A to Z</option
+                >
+                <option value="?sort=name&amp;order=desc"
+                  >T&#234;n sản phẩm: Z to A</option
+                >
+              </select>
+            </div>
+          </nav>
+          <div class="product-block product-grid clearfix">
+            {% for product in products %}
+
+            <div
+              class="col-md-2 col-sm-2 col-xs-6 product-resize product-item-box"
+            >
+              <div class="product-item">
+                <div class="image image-resize">
+                  <a
+                    href="{% url 'listing' product.id %}"
+                    title="{{product.name}}"
+                  >
+                    <img
+                      src="{{product.image.url}}"
+                      alt="{{product.name}}"
+                      class="img-responsive lazy-img"
+                      style="height: 250px;"
+                    />
+                  </a>
+                  <span class="hot">Hot</span>
+                </div>
+                <div class="right-block">
+                  <h2 class="name">
+                    <a href="#" title="{{product.name}}">{{product.name}}</a>
+                  </h2>
+                  <div class="rating">
+                    <div class="rating-1">
+                      <span class="rating-img"> </span>
+                    </div>
+                  </div>
+                  <div class="price">
+                    <span class="price-new">{{product.price}}₫</span>
+                  </div>
+                  <div class="button">
+                  {% if request.user.is_authenticated %}
+                    <button
+                      class="btn btn-default btn-add-cart"
+                      onclick="addToCart('{{product.id}}')"
+                      >Add to Cart</button
+                    >
+                    {% else %}
+                    <a class="btn btn-default btn-add-cart" href="{% url 'login' %}"> Login to buy</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        <script type="text/javascript">
+  function addToCart(id) {
+    
+    var data = {
+      csrfmiddlewaretoken: "{{ csrf_token }}",
+      quantity: 1
+    };
+
+    $.ajax({
+      type: "POST",
+      url: `/addToCart/${id}/`,
+      dataType: "json",
+      success: function (msg) {
+        if (msg) {
+          
+          $('#cart-total').html(msg.cart.count);
+        } else {
+          alert("Cannot add to list !");
+        }
+      },
+      data: data,
+    });
+  }
+</script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

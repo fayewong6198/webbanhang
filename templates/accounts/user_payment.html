@@ -1,0 +1,99 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+<section id="profile" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="menu-about">
+          <h3>
+            <span>
+              {{request.user.username}}
+            </span>
+          </h3>
+          <ul>
+            <li>
+              <a href="{% url 'profile' %}">Edit Profile</a>
+            </li>
+            <li>
+              <a href="{% url 'user_payments' %}">Your Payments</a>
+              
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+      <div
+          class="cart-content"
+        >
+          
+          
+          <div class="cart-block">
+            <div class="cart-info table-responsive">
+              <table class="table product-list">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                {% if products is not None %}
+                {% for product in products %}
+                <tr>
+                    <td class="image">
+                      <a href="{% url 'listing' product.product.id %}">
+                        <img
+                          src="{{product.product.image.url}}"
+                          class="img-responsive"
+                      /></a>
+                    </td>
+                    <td class="des">
+                      <h2>
+                        <a href="{% url 'listing' product.product.id %}"
+                          >{{product.product.name}}</a
+                        >
+                      </h2>
+                      
+                    </td>
+                    <td class="price" >{{product.product.price}}</td>
+                    <td class="quantity">
+                      <input
+                        class="inputQuantity"
+                        type="number"
+                        value={{product.quantity}}
+                        class="text"
+                        productId='{{product.product.id}}'
+                        readonly
+                      />
+
+                    
+                    </td>
+                    <td class="amount" id="amount{{product.product.id}}">
+                      {% widthratio product.product.price 1 product.quantity %}
+                    </td>
+                    
+                    
+                  </tr>
+                {% endfor %}
+                {% endif %}
+                  
+                </tbody>
+              </table>
+            </div>
+            <div class="clearfix text-right">
+              <span><b>Tổng thanh toán: {{payment.total}} </b></span>
+              <span class="pay-price" id="total">
+                {{total}}đ
+              </span>
+            </div>
+            
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+</section>
+{% endblock %}

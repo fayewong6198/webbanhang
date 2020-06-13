@@ -1,0 +1,229 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="menu-account">
+          <h3>
+            <span>
+              Tài khoản
+            </span>
+          </h3>
+          <ul>
+            <li>
+              <a href="{% url 'login' %}"
+                ><i class="fa fa-sign-in"></i>Đăng nhập</a
+              >
+            </li>
+            <li>
+              <a href="{% url 'register' %}"><i class="fa fa-key"></i>Đăng ký</a>
+            </li>
+          
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="breadcrumb clearfix">
+          <ul>
+            <li
+              itemtype="http://shema.org/Breadcrumb"
+              itemscope=""
+              class="home"
+            >
+              <a title="Đến trang chủ" href="/" itemprop="url"
+                ><span itemprop="title">Trang chủ</span></a
+              >
+            </li>
+            <li class="icon-li"><strong>Đăng nhập</strong></li>
+          </ul>
+        </div>
+        <script type="text/javascript">
+          $(".link-site-more").hover(
+            function () {
+              $(this).find(".s-c-n").show();
+            },
+            function () {
+              $(this).find(".s-c-n").hide();
+            }
+          );
+        </script>
+        <script src="/app/services/accountServices.js"></script>
+        <script src="/app/controllers/accountController.js"></script>
+        <div
+          class="login-content clearfix"
+          ng-controller="accountController"
+          ng-init="initController()"
+        >
+          <h1 class="title"><span>Đăng nhập hệ thống</span></h1>
+          
+          <div
+            class="col-md-6 col-md-offset-3 col-xs-12 col-sm-12 col-xs-offset-0 col-sm-offset-0"
+          >
+          <form action="/accounts/register/" method="POST" class="form-horizontal">
+              {% csrf_token %} {% for field in form %}
+              <div class="form-group">
+                {{ field.errors }}
+                <label for="" class="">{{ field.label_tag }}</label>
+                {{ field |add_class:'form-control'}} {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+
+              <input type="submit" value="Register" class="btn btn-default" />
+              <p class="my-1">
+                Already have an account? <a href="{% url 'login' %}">Login</a>
+              </p>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="partner">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <link href="/Scripts/owl-carousel/owl.carousel.css" rel="stylesheet" />
+        <link href="/Scripts/owl-carousel/owl.theme.css" rel="stylesheet" />
+        <script src="/Scripts/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/app/services/moduleServices.js"></script>
+        <script src="/app/controllers/moduleController.js"></script>
+        <!--Begin-->
+        <div
+          class="partner-content owl-carousel"
+          ng-controller="moduleController"
+          ng-init="initPartnerController('Partners')"
+        >
+          <h3 class="title">Đối tác</h3>
+          <div class="partner-block">
+            <div class="partner-item" ng-repeat="item in Partners">
+              <a href="{{item.Link}}" target="_blank" title="{{item.Name}}">
+                <img
+                  ng-src="{{item.Logo}}"
+                  data-original="{{item.Image}}"
+                  alt="{{item.Name}}"
+                  class="img-responsive lazy"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="boxprevnext">
+            <a class="prev prevlogo"><i class="fa fa-angle-left"></i></a>
+            <a class="next nextlogo"><i class="fa fa-angle-right"></i></a>
+          </div>
+        </div>
+        <script type="text/javascript">
+          $(document).ready(function () {
+            var owl = $(".partner-block");
+            owl.owlCarousel({
+              autoPlay: true,
+              autoPlay: 5000,
+              items: 6,
+              slideSpeed: 1000,
+              pagination: false,
+              itemsDesktop: [1200, 6],
+              itemsDesktopSmall: [980, 5],
+              itemsTablet: [767, 4],
+              itemsMobile: [480, 2],
+            });
+            $(".partner-content .nextlogo").click(function () {
+              owl.trigger("owl.next");
+            });
+            $(".partner-content .prevlogo").click(function () {
+              owl.trigger("owl.prev");
+            });
+          });
+        </script>
+        <!--End-->
+        <script type="text/javascript">
+          window.Partners = [
+            {
+              Id: 1,
+              ShopId: 90,
+              Name: "Adv01",
+              Link: "#",
+              Logo: "/Uploads/shop90/images/product/guhi.jpg",
+              Index: 1,
+              Inactive: false,
+            },
+            {
+              Id: 7,
+              ShopId: 90,
+              Name: "Adv02",
+              Link: "#",
+              Logo: "/Uploads/shop90/images/product/canon.jpg",
+              Index: 2,
+              Inactive: false,
+            },
+            {
+              Id: 8,
+              ShopId: 90,
+              Name: "ads",
+              Link: "#",
+              Logo: "/Uploads/shop90/images/product/nikon.jpg",
+              Index: 3,
+              Inactive: false,
+            },
+            {
+              Id: 9,
+              ShopId: 90,
+              Name: "4ss",
+              Link: "#",
+              Logo:
+                "/Uploads/shop90/images/product/burbery_2jrem8aiipohl_simg_603cef_226x114_maxb.png",
+              Index: 4,
+              Inactive: false,
+            },
+            {
+              Id: 10,
+              ShopId: 90,
+              Name: "dfa",
+              Link: "#",
+              Logo: "/Uploads/shop90/images/product/nikon(1).jpg",
+              Index: 5,
+              Inactive: false,
+            },
+          ];
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} <section id="register" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4>
+              <i class="fas fa-user-plus"></i> Register</h4>
+          </div>
+          <div class="card-body">
+            <form action="/accounts/register/" method="POST" class="form">
+              {% csrf_token %} {% for field in form %}
+              <div class="form-group">
+                {{ field.errors }}
+                <label for="" class="">{{ field.label_tag }}</label>
+                {{ field |add_class:'form-control'}} {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+
+              <input type="submit" value="Register" class="btn btn-secondary btn-block" />
+              <p class="my-1">
+                Already have an account? <a href="{% url 'login' %}">Login</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> {% endcomment %}
+{% endblock %}

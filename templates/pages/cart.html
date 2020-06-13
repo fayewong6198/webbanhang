@@ -1,0 +1,224 @@
+{% extends 'base.html' %} {% block content %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="breadcrumb clearfix">
+          <ul>
+            <li
+              itemtype="http://shema.org/Breadcrumb"
+              itemscope=""
+              class="home"
+            >
+              <a title="Đến trang chủ" href="/" itemprop="url"
+                ><span itemprop="title">Trang chủ</span></a
+              >
+            </li>
+            <li class="icon-li"><strong>Giỏ hàng</strong></li>
+          </ul>
+        </div>
+        <script type="text/javascript">
+          $(".link-site-more").hover(
+            function () {
+              $(this).find(".s-c-n").show();
+            },
+            function () {
+              $(this).find(".s-c-n").hide();
+            }
+          );
+        </script>
+        <script src="/app/services/orderServices.js"></script>
+        <script src="/app/controllers/orderController.js"></script>
+        <div
+          class="cart-content"
+          ng-controller="orderController"
+          ng-init="initOrderCartController()"
+        >
+          <h1><span>Giỏ hàng của tôi</span></h1>
+          <div class="steps clearfix">
+            <ul class="clearfix">
+              <li
+                class="cart active col-md-2 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-0 col-xs-offset-0"
+              >
+                <span><i class="fa fa-shopping-cart"></i></span
+                ><span>Giỏ hàng của tôi</span
+                ><span class="step-number"><a>1</a></span>
+              </li>
+              <li class="payment col-md-2 col-xs-12 col-sm-4">
+                <span><i class="fa fa-usd"></i></span
+                ><span>Thanh toán</span
+                ><span class="step-number"><a>2</a></span>
+              </li>
+              <li class="finish col-md-2 col-xs-12 col-sm-4">
+                <span><i class="fa fa-check"></i></span
+                ><span>Hoàn tất</span><span class="step-number"><a>3</a></span>
+              </li>
+            </ul>
+          </div>
+          <div class="cart-block">
+            <div class="cart-info table-responsive">
+              <table class="table product-list">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% if products is not None %}
+                {% for product in productsInCart %}
+                <tr>
+                    <td class="image">
+                      <a href="{% url 'listing' product.product.id %}">
+                        <img
+                          src="{{product.product.image.url}}"
+                          class="img-responsive"
+                      /></a>
+                    </td>
+                    <td class="des">
+                      <h2>
+                        <a href="{% url 'listing' product.product.id %}"
+                          >{{product.product.name}}</a
+                        >
+                      </h2>
+                      
+                    </td>
+                    <td class="price" >{{product.product.price}}</td>
+                    <td class="quantity">
+                      <input
+                        class="inputQuantity"
+                        type="number"
+                        value={{product.quantity}}
+                        class="text"
+                        productId='{{product.product.id}}'
+                      />
+
+                    
+                    </td>
+                    <td class="amount" id="amount{{product.product.id}}">
+                      {% widthratio product.product.price 1 product.quantity %}
+                    </td>
+                    
+                    <td class="remove">
+                    <form method="POST" action="/deleteFromCart/{{product.product.id}}/">
+                    {% csrf_token %} 
+                        <input type='submit' value='delete' class="btn btn-danger">
+                        
+                      </a>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% endif %}
+                  
+                </tbody>
+              </table>
+            </div>
+            <div class="clearfix text-right">
+              <span><b>Tổng thanh toán:</b></span>
+              <span class="pay-price" id="total">
+                {{total}}đ
+              </span>
+            </div>
+            <div class="button text-right">
+              <a
+                class="btn btn-default"
+                href="/"
+                onclick="window.history.back()"
+                >Tiếp tục mua hàng</a
+              >
+              <a class="btn btn-primary" href="{% url 'payment' %}"
+                >Tiến hành thanh toán</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="partner">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <link href="/Scripts/owl-carousel/owl.carousel.css" rel="stylesheet" />
+        <link href="/Scripts/owl-carousel/owl.theme.css" rel="stylesheet" />
+        <script src="/Scripts/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/app/services/moduleServices.js"></script>
+        <script src="/app/controllers/moduleController.js"></script>
+        <!--Begin-->
+        <div
+          class="partner-content owl-carousel"
+          ng-controller="moduleController"
+          ng-init="initPartnerController('Partners')"
+        >
+          <h3 class="title">Đối tác</h3>
+          <div class="partner-block">
+            <div class="partner-item" ng-repeat="item in Partners">
+              <a href="{{item.Link}}" target="_blank" title="{{item.Name}}">
+                <img
+                  ng-src="{{item.Logo}}"
+                  data-original="{{item.Image}}"
+                  alt="{{item.Name}}"
+                  class="img-responsive lazy"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="boxprevnext">
+            <a class="prev prevlogo"><i class="fa fa-angle-left"></i></a>
+            <a class="next nextlogo"><i class="fa fa-angle-right"></i></a>
+          </div>
+        </div>
+        <script type="text/javascript">
+          $(document).ready(function () {
+            console.log( "ready!" );
+    $(".inputQuantity").change(function() {
+  
+  console.log("cc")
+      let id = $(this).attr('productId')
+    var data = {
+      csrfmiddlewaretoken: "{{ csrf_token }}",
+      quantity: $(this).val(),
+    };
+
+    $.ajax({
+      type: "POST",
+      url: `/changeQuantity/${id}/`,
+      dataType: "json",
+      success: function (msg) {
+        if (msg) {
+          console.log(msg.count);
+          $(`#amount${id}`).html(msg.price)
+          $('#total').html(msg.total)
+          $('#cart-total').html(msg.count)
+        } else {
+          alert("Cannot add to list !");
+        }
+      },
+
+      data: data,
+    });
+ })
+
+ $("#target").click(function() {
+   alert("cc")
+ })
+  function changeQuantity(id) {
+    console.log("change")
+  }
+            
+          });
+        </script>
+        <!--End-->
+      
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

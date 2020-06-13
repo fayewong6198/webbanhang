@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+<section id="profile" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        {% include 'partials/_lefttab.html' %}
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Conctacts</h4> {% for contact in contacts %}
+            <a href="{% url 'contact' contact.id %}">{{contact.renter_user}}</a>
+            <br />
+            {% endfor %}
+          </div>
+
+          <div class="col-md-6">
+            <h4>Pre Orders</h4>
+            {% for pre in pre_orders %}
+            <a href="{% url 'pre_order' pre.id %}">{{pre.renter_user}}</a>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

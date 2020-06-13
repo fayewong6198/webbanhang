@@ -1,0 +1,453 @@
+{% extends 'base.html' %} {% load static%} {% load widget_tweaks %} {% block content %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="breadcrumb clearfix">
+          <ul>
+            <li
+              itemtype="http://shema.org/Breadcrumb"
+              itemscope=""
+              class="home"
+            >
+              <a title="Đến trang chủ" href="/" itemprop="url"
+                ><span itemprop="title">Trang chủ</span></a
+              >
+            </li>
+            <li class="icon-li"><strong>Liên hệ</strong></li>
+          </ul>
+        </div>
+        <script type="text/javascript">
+          $(".link-site-more").hover(
+            function () {
+              $(this).find(".s-c-n").show();
+            },
+            function () {
+              $(this).find(".s-c-n").hide();
+            }
+          );
+        </script>
+
+
+        
+        <script src="http://runecom03.runtime.vn/app/services/contactServices.js"></script>
+        <script src="http://runecom03.runtime.vn/app/controllers/contactController.js"></script>
+        <!--Begin-->
+        <div
+          class="contact-content clearfix"
+          ng-controller="contactController"
+          ng-init="initController('Shop','Maps')"
+        >
+          <h1 class="title">
+            <span>
+              Thông tin liên hệ
+            </span>
+          </h1>
+          <div class="contact-block clearfix">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="/">
+                  <img class="img-responsive" src="{% static 'img/logo.png' %}" />
+                </a>
+              </div>
+              <div class="col-md-9">
+                <div class="contact-info">
+                  <div class="docs"><b class="name">Halo shop</b></div>
+                  <div class="docs">
+                    <i class="fa fa-map-marker"></i>
+                    <b>Địa chỉ:</b> Address
+                  </div>
+                  <div class="docs">
+                    <i class="fa fa-phone"></i>
+                    <b>Điện thoại:</b> Hotline
+                  </div>
+                  <div class="docs">
+                    <i class="fa fa-mobile"></i>
+                    <b>Hotline</b> 0123456789
+                  </div>
+                  <div class="docs">
+                    <i class="fa fa-fax"></i>
+                    <b>Fax:</b> Fax
+                  </div>
+                  <div class="docs">
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{shop.Email}}">admin@gmail.com</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="" />
+            <h3 class="title">Gửi thông tin liên hệ</h3>
+            <div class="description">
+              Xin vui lòng điền các yêu cầu vào mẫu dưới đây và gửi cho chúng
+              tôi. Chúng tôi sẽ trả lời bạn ngay sau khi nhận được. Xin chân
+              thành cảm ơn!
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="contact-feedback">
+                  <form method="POST" action="/contact/">
+                  {% csrf_token %}
+              
+                    <div class="form-group input-group">
+                      <span class="input-group-addon"
+                        ><i class="fa fa-user"></i
+                      ></span>
+                      <input
+                        type="text"
+                        placeholder="Họ tên"
+                        name="name"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                    <div class="form-group input-group">
+                      <span class="input-group-addon"
+                        ><i class="fa fa-map-marker"></i
+                      ></span>
+                      <input
+                        type="text"
+                        placeholder="Địa chỉ"
+                        name="address"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group input-group">
+                      <span class="input-group-addon"
+                        ><i class="fa fa-envelope"></i
+                      ></span>
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                    <div class="form-group input-group">
+                      <span class="input-group-addon"
+                        ><i class="fa fa-phone"></i
+                      ></span>
+                      <input
+                        type="text"
+                        placeholder="Điện thoại"
+                        name="mobile"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                    <div class="form-group input-group">
+                      <span class="input-group-addon"
+                        ><i class="fa fa-list-alt"></i
+                      ></span>
+                      <input
+                        type="text"
+                        placeholder="Tiêu đề"
+                        name="title"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <textarea
+                        placeholder="Nội dung"
+                        class="form-control"
+                        rows="3"
+                        name="content"
+                        required
+                      ></textarea>
+                    </div>
+                    <button class="btn btn-default" type="submit">Gửi</button>
+                  </form>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="map clearfix">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.1301454490144!2d106.79919521491944!3d10.877704592252824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d99bbfcbc3ab%3A0xbd32235dddc23b7f!2sIU!5e0!3m2!1svi!2s!4v1591772462261!5m2!1svi!2s" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+                  <div class="map-information" ng-if="Maps.length>1">
+                    <ul class="clearfix">
+                      <li ng-repeat="item in Maps">
+                        <div>
+                          <a
+                            onclick="moveToMaker(); return false;"
+                            href="javascript:void(0)"
+                          >
+                            {{item.Name}}
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          var map;
+          var infowindow;
+          var marker = new Array();
+          var old_id = 0;
+          var infoWindowArray = new Array();
+          var infowindow_array = new Array();
+          function initialize() {
+            var defaultLatLng = new google.maps.LatLng(
+              10.845064529472292,
+              106.63674483179932
+            );
+
+            var myOptions = {
+              zoom: 16,
+              center: defaultLatLng,
+              scrollwheel: true,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+            };
+            map = new google.maps.Map(
+              document.getElementById("map_canvas"),
+              myOptions
+            );
+            map.setCenter(defaultLatLng);
+
+            if (Maps.length <= 0) {
+              var arrLatLng = new google.maps.LatLng(
+                10.845064529472292,
+                106.63674483179932
+              );
+              var myHtml =
+                "<div class='map-description'> <strong>" +
+                firstMap.Name +
+                "</strong><br/>Địa chỉ: <span>" +
+                firstMap.Address +
+                "</span><br/>Điện thoại: <span>" +
+                firstMap.Phone +
+                "</span><br/></div>";
+              infoWindowArray[firstMap.Id] = myHtml;
+              loadMarker(arrLatLng, infoWindowArray[firstMap.Id], firstMap.Id);
+            }
+
+            $.each(Maps, function (index, it) {
+              var arrLatLng = new google.maps.LatLng(it.PosX, it.PosY);
+              var myHtml =
+                "<div class='map-description'> <strong>" +
+                it.Name +
+                "</strong><br/>Địa chỉ: <span>" +
+                it.Address +
+                "</span><br/>Điện thoại: <span>" +
+                it.Phone +
+                "</span><br/></div>";
+              infoWindowArray[it.Id] = myHtml;
+              loadMarker(arrLatLng, infoWindowArray[it.Id], it.Id);
+            });
+
+            moveToMaker(firstMap.Id);
+          }
+          function loadMarker(myLocation, myInfoWindow, id) {
+            marker[id] = new google.maps.Marker({
+              position: myLocation,
+              map: map,
+              visible: true,
+            });
+            var popup = myInfoWindow;
+            infowindow_array[id] = new google.maps.InfoWindow({
+              content: popup,
+            });
+            google.maps.event.addListener(marker[id], "click", function () {
+              if (id == old_id) return;
+              if (old_id > 0) infowindow_array[old_id].close();
+              infowindow_array[id].open(map, marker[id]);
+              old_id = id;
+            });
+            google.maps.event.addListener(
+              infowindow_array[id],
+              "closeclick",
+              function () {
+                old_id = 0;
+              }
+            );
+          }
+          function moveToMaker(id) {
+            var location = marker[id].position;
+            map.setCenter(location);
+            if (old_id > 0) infowindow_array[old_id].close();
+            infowindow_array[id].open(map, marker[id]);
+            old_id = id;
+          }
+        </script>
+        <!--End-->
+        <script type="text/javascript">
+          var firstMap = {
+            Id: 90,
+            ShopId: 0,
+            Name: "CÔNG TY TNHH PHÁT TRIỂN CÔNG NGHỆ RUNTIME",
+            Address: "5/12A Quang Trung, P.14, Q.Gò Vấp, Tp.HCM",
+            Phone: "(08) 66 85 85 38",
+            PosX: 10.844895933994351,
+            PosY: 106.63674483179932,
+            Index: 0,
+            Inactive: false,
+          };
+          var Maps = [];
+          window.Maps = Maps;
+          window.Shop = {
+            Name: "CÔNG TY TNHH PHÁT TRIỂN CÔNG NGHỆ RUNTIME",
+            Email: "info@runtime.vn",
+            Phone: "(08) 66 85 85 38",
+            Logo: "/Uploads/shop90/images/banner(1).png",
+            Fax: "(08) 66 85 85 38",
+            Website: "http://www.runtime.vn",
+            Hotline: "0908 77 00 95",
+            Address: "5/12A Quang Trung, P.14, Q.Gò Vấp, Tp.HCM",
+            Fanpage: "https://www.facebook.com/runtime.vn",
+            Google: null,
+            Facebook: "https://www.facebook.com/runtime.vn",
+            Youtube: null,
+            Twitter: null,
+            IsBanner: false,
+            IsFixed: true,
+            BannerImage: "/Uploads/shop90/images/product/761x309.png",
+          };
+          $(document).ready(function () {
+            initialize();
+          });
+        </script>
+      </div>
+      <div class="col-md-3">
+        <script src="http://runecom03.runtime.vn/app/services/moduleServices.js"></script>
+        <script src="http://runecom03.runtime.vn/app/controllers/moduleController.js"></script>
+        <!--Begin-->
+        <div
+          class="box-support-online"
+          ng-controller="moduleController"
+          ng-init="initSupportOnlineController('Shop','SupportOnlines')"
+        >
+          <h3><span>Hỗ trợ trực tuyến</span></h3>
+          <div class="support-online-block">
+            <div class="support-hotline">
+              HOTLINE<br /><span>0123456789</span>
+            </div>
+            <div class="support-item" ng-repeat="item in SupportOnlines">
+              <div class="name">{{item.FullName}} <b>{{item.Phone}}</b></div>
+              <ul>
+                <li ng-if="item.Skype!=''&&item.Skype!=null">
+                  <a
+                    ng-href="skype:{{item.Skype}}?chat"
+                    title="{{item.FullName}}"
+                  >
+                    <img
+                      width="70"
+                      src="{% static 'img/logo.png' %}"
+                    />
+                  </a>
+                </li>
+                <li ng-if="item.Viber!=''&&item.Viber!=null" class="social">
+                  <a
+                    href="tel:{{item.Viber}}"
+                    title="{{item.FullName}}"
+                    target="_blank"
+                  >
+                    <img
+                      src="http://runecom03.runtime.vn/Images/icon-viber.png"
+                      alt="Viber"
+                  /></a>
+                  <span class="phone"
+                    ><a
+                      href="tel:{{item.Viber}}"
+                      title="{{item.FullName}}"
+                      target="_blank"
+                      >{{item.Viber}}
+                    </a></span
+                  >
+                </li>
+                <li ng-if="item.Zalo!=''&&item.Zalo!=null" class="social">
+                  <a
+                    href="tel:{{item.Zalo}}"
+                    title="{{item.FullName}}"
+                    target="_blank"
+                  >
+                    <img
+                      src="http://runecom03.runtime.vn/Images/icon-zalo.png"
+                      alt="Zalo"
+                  /></a>
+                  <span class="phone"
+                    ><a
+                      href="tel:{{item.Zalo}}"
+                      title="{{item.FullName}}"
+                      target="_blank"
+                      >{{item.Zalo}}
+                    </a></span
+                  >
+                </li>
+                <li
+                  ng-if="item.Facebook!=''&&item.Facebook!=null"
+                  class="social"
+                >
+                  <a
+                    href="{{item.Facebook}}"
+                    title="{{item.FullName}}"
+                    target="_blank"
+                  >
+                    <img
+                      src="http://runecom03.runtime.vn/Images/icon-facebook.png"
+                      alt="Facebook"
+                  /></a>
+                  <span class="phone"
+                    ><a
+                      href="{{item.Facebook}}"
+                      title="{{item.FullName}}"
+                      target="_blank"
+                      >{{item.FullName}}
+                    </a></span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--End-->
+        <script type="text/javascript">
+          window.Shop = {
+            Name: "CÔNG TY TNHH PHÁT TRIỂN CÔNG NGHỆ RUNTIME",
+            Email: "info@runtime.vn",
+            Phone: "(08) 66 85 85 38",
+            Logo: "/Uploads/shop90/images/banner(1).png",
+            Fax: "(08) 66 85 85 38",
+            Website: "http://www.runtime.vn",
+            Hotline: "0908 77 00 95",
+            Address: "5/12A Quang Trung, P.14, Q.Gò Vấp, Tp.HCM",
+            Fanpage: "https://www.facebook.com/runtime.vn",
+            Google: null,
+            Facebook: "https://www.facebook.com/runtime.vn",
+            Youtube: null,
+            Twitter: null,
+            IsBanner: false,
+            IsFixed: true,
+            BannerImage: "/Uploads/shop90/images/product/761x309.png",
+          };
+          window.SupportOnlines = [
+            {
+              Id: 17,
+              ShopId: 90,
+              FullName: "Mr.Trường",
+              Position: "Giám đốc",
+              Yahoo: "truongka04",
+              Skype: "truong.vt",
+              Viber: null,
+              Zalo: null,
+              Facebook: null,
+              Phone: "0908770095",
+              Phone1: null,
+              Email: null,
+              Address: null,
+              Avatar: null,
+              Company: null,
+              Index: 1,
+              Inactive: false,
+            },
+          ];
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

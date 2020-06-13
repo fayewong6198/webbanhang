@@ -1,0 +1,250 @@
+{% extends 'base.html' %} {% block content %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <script src="/app/services/orderServices.js"></script>
+        <script src="/app/controllers/orderController.js"></script>
+        <div
+          class="payment-content"
+          ng-controller="orderController"
+          ng-init="initCheckoutController()"
+        >
+          <h1 class="title"><span>Thanh toán</span></h1>
+          <div class="steps clearfix">
+            <ul class="clearfix">
+              <li
+                class="cart active col-md-2 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-0 col-xs-offset-0"
+              >
+                <span><i class="fa fa-shopping-cart"></i></span
+                ><span>Giỏ hàng của tôi</span
+                ><span class="step-number"><a>1</a></span>
+              </li>
+              <li class="payment active col-md-2 col-xs-12 col-sm-4">
+                <span><i class="fa fa-usd"></i></span
+                ><span>Thanh toán</span
+                ><span class="step-number"><a>2</a></span>
+              </li>
+              <li class="finish col-md-2 col-xs-12 col-sm-4">
+                <span><i class="fa fa-check"></i></span
+                ><span>Hoàn tất</span><span class="step-number"><a>3</a></span>
+              </li>
+            </ul>
+          </div>
+          <div class="payment-title text-center hidden">
+            <h3>
+              GIAO HÀNG TOÀN QUỐC - THANH TOÁN KHI NHẬN HÀNG - 15 NGÀY ĐỔI TRẢ
+              MIỄN PHÍ
+            </h3>
+            <div>
+              Nếu gặp khó khăn trong việc đặt hàng xin hãy gọi<b
+                class="hotline"
+              >
+                0908 77 00 95
+              </b>
+              để được hỗ trợ tốt nhất.
+            </div>
+          </div>
+          <form
+            class="payment-block clearfix"
+            id="checkout-container"
+            method='POST'
+            action='/payment/'
+          >
+          {% csrf_token %}
+            <div class="col-md-4 col-sm-12 col-xs-12 payment-step step2">
+              <h4>1. Địa chỉ thanh toán và giao hàng</h4>
+              <div class="step-preview clearfix">
+                <h2 class="title">Thông tin thanh toán</h2>
+                <div class="info-user" ng-if="CustomerId>0">
+                  <label>Người nhận:<span>{{CustomerName}}</span></label>
+                  <label>Điện thoại:<span>{{CustomerPhone}}</span></label>
+                  <label>Email:<span>{{CustomerEmail}}</span></label>
+                  <label>Địa chỉ:<span>{{CustomerAddress}}</span></label>
+                  <label
+                    >Quận/Huyện:<span>{{CustomerDistrictName}}</span></label
+                  >
+                  <label>Thành Phố:<span>{{CustomerProvinceName}}</span></label>
+                  <div class="edit-button">
+                    <a href="#modalAccount"
+                      ><i class="fa fa-pencil-square-o"></i
+                    ></a>
+                  </div>
+                </div>
+
+                <div class="form-block" ng-show="IsOtherAddress==true">
+                  <div class="form-group">
+                    <label>Full Name:</label>
+                    <input
+                      name='name'
+                      class="form-control"
+                      placeholder="Họ & Tên"
+                      type="text"
+                      value="{{request.user.first_name}} {{request.user.last_name}}"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Mobile:</label>
+                    <input
+                      name='mobile'
+                      class="form-control"
+                      placeholder="Số điện thoại"
+                      type="text"
+                      value="{{request.user.mobile}}"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Email:</label>
+                    <input
+                      name='email'
+                      class="form-control"
+                      placeholder="Email"
+                      type="text"
+                      value="{{request.user.email}}"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input
+                      name='address'
+                      class="form-control"
+                      placeholder="Địa chỉ"
+                      type="text"
+                      value="{{request.user.address}}"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 payment-step step3">
+              <h4>2. Thanh toán và vận chuyển</h4>
+              <div class="step-preview clearfix">
+                <h2 class="title">Vận chuyển</h2>
+                <div class="form-group">
+                  <select required name='delivery' class="form-control"
+                    >
+                    {% for delivery in deliveries %}
+                    <option name='delivery' value="{{delivery.id}}">
+                      {{delivery.name}}
+                    </option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <h2 class="title">Thanh toán</h2>
+                {% for type in paymentTypes %}
+                <div class="radio">
+                  <label>
+                    <input
+                      name='type'
+                      type="radio"
+                      value="{{type.id}}"
+                      name="optionsRadios"
+                      required
+                    />
+                    {{type.name}}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 payment-step step1">
+              <h4>3. Thông tin đơn hàng</h4>
+              <div class="step-preview">
+                <div class="cart-info">
+                  {% for product in productsInCart %}
+                  <div class="cart-items">
+                    <div
+                      class="cart-item clearfix"
+                      
+                    >
+                      <span class="image pull-left" style="margin-right: 10px;">
+                        <a href="{% url 'listing' product.product.id %}">
+                          <img
+                            src="{{product.product.image.url}}"
+                            class="img-responsive"
+                          />
+                        </a>
+                      </span>
+                      <div class="product-info pull-left">
+                        <span class="product-name">
+                          <a href="{% url 'listing' product.product.id %}"
+                            >{{product.product.name}}</a
+                          >
+                          x <span>{{product.quantity}}</span>
+                        </span>
+                      </div>
+                      <span class="price">
+                        {% widthratio product.product.price 1 product.quantity %} ₫</span
+                      >
+                    </div>
+                  </div>
+                  {% endfor %}
+                  <div class="total-price">
+                    Thành tiền <label> {{ Amount }} ₫</label>
+                  </div>
+                  <div class="shiping-price">
+                    Phí vận chuyển
+                    <label>{{ ShippingAmount }} ₫</label>
+                  </div>
+                  <div class="btn-coupon hidden">
+                    <a href="#" class="btn btn-primary"
+                      ><span></span>Sử dụng mã giảm giá
+                    </a>
+                  </div>
+                  <div class="use-coupon hidden">
+                    <div class="form-group">
+                      <input
+                        placeholder="Nhập mã giảm giá"
+                        class="coupon-code form-control"
+                      />
+                      <a class="btn btn-primary">Sử dụng</a>
+                    </div>
+                  </div>
+                  <div class="total-payment">
+                    Thanh toán <span> {{ total }} ₫</span>
+                  </div>
+                  <div class="button-submit">
+                    <button class="btn btn-default" type="submit">
+                      Đặt hàng
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="breadcrumb clearfix">
+          <ul>
+            <li
+              itemtype="http://shema.org/Breadcrumb"
+              itemscope=""
+              class="home"
+            >
+              <a title="Đến trang chủ" href="/" itemprop="url"
+                ><span itemprop="title">Trang chủ</span></a
+              >
+            </li>
+            <li class="icon-li"><strong>Thanh toán</strong></li>
+          </ul>
+        </div>
+        <script type="text/javascript">
+          $(".link-site-more").hover(
+            function () {
+              $(this).find(".s-c-n").show();
+            },
+            function () {
+              $(this).find(".s-c-n").hide();
+            }
+          );
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
